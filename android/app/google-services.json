@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "120849661823",
+    "project_id": "sebzyy-cc9a9",
+    "storage_bucket": "sebzyy-cc9a9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120849661823:android:c0bb588bef7b1a0de1a44a",
+        "android_client_info": {
+          "package_name": "com.myvercel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDiONDAnURruMx5eRS7mzSNXnIZ4qj9c0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

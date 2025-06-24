@@ -1,0 +1,370 @@
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Image,
+  ImageBackground,
+  Pressable,
+} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
+import {Colors, Fonts} from '../utils/Theme';
+import {OtpInput} from 'react-native-otp-entry';
+import {moderateScale, screenHeight, screenWidth} from '../utils/Metrics';
+import {useNavigation} from '@react-navigation/native';
+import auth, {getAuth} from '@react-native-firebase/auth';
+
+export default function TenantScreen() {
+  const {navigate} = useNavigation();
+
+  const [Phonenumber, setPhonenumber] = useState('');
+  const [OTP, setOTP] = useState('');
+  const [confirm, setConfirm] = useState(null);
+  const [withCallingCode] = useState(`+91`);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const flatListRef = useRef(null);
+
+  const CreateTenantsSteps = [
+    {
+      title: 'Enter Mobile Number',
+      buttonText: 'Continue',
+      type: 'phonenumber',
+      disbled: !(Phonenumber?.length >= 10),
+    },
+    {
+      title: 'OTP',
+      buttonText: 'Verify',
+      type: 'OTP',
+      disbled: !(OTP?.length === 6),
+    },
+  ];
+
+  const phonenumberfun = text => {
+    setPhonenumber(text);
+  };
+
+  const OTPHandle = otp => {
+    setOTP(otp);
+  };
+
+  const sendOtp = async () => {
+    if (Phonenumber.length < 10) {
+      Alert.alert('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+
+    const formattedPhoneNumber = `${withCallingCode}${Phonenumber}`;
+
+    // ✅ Enforce only test numbers
+    const allowedTestNumbers = ['+911234567890'];
+    const testOtpCode = '123456';
+
+    if (!allowedTestNumbers.includes(formattedPhoneNumber)) {
+      Alert.alert(
+        'This is a test app. Only predefined test numbers are allowed.\n\nUse +911234567890',
+      );
+      return;
+    }
+
+    try {
+      const formattedPhoneNumber = `${withCallingCode}${Phonenumber}`;
+      const confirmation = await getAuth().signInWithPhoneNumber(
+        formattedPhoneNumber,
+      );
+      setConfirm(confirmation);
+      // Alert.alert('OTP sent successfully!');
+
+      const newIndex = currentIndex + 1;
+      flatListRef.current?.scrollToIndex({index: newIndex, animated: true});
+      setCurrentIndex(newIndex);
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      console.log('Error sending OTP', error.message);
+    }
+  };
+
+  const verifyOtp = async () => {
+    if (!confirm) {
+      Alert.alert('OTP not sent yet. Please enter your phone number first.');
+      return;
+    }
+
+    if (!/^\d{6}$/.test(OTP)) {
+      Alert.alert('Please enter a valid 4-digit OTP.');
+      return;
+    }
+
+    try {
+      await confirm.confirm(OTP); // ✅ This matches Firebase test OTP
+      // Alert.alert('Phone number verified successfully!');
+      navigate('UserImageCapture');
+    } catch (error) {
+      console.error('Error verifying OTP:', error.message);
+      Alert.alert('Error verifying OTP', error.message);
+    }
+  };
+
+  // const verifyOtp = async () => {
+  //   if (!confirm) {
+  //     Alert.alert('OTP not sent yet. Please enter your phone number first.');
+  //     return;
+  //   }
+
+  //   if (!/^\d{4}$/.test(OTP)) {
+  //     Alert.alert('Please enter a valid 4-digit OTP.');
+  //     return;
+  //   }
+
+  //   try {
+  //     await confirm.confirm(OTP);
+  //     Alert.alert('Phone number verified successfully!');
+  //     navigate('UserImageCapture');
+  //   } catch (error) {
+  //     console.error('Error verifying OTP:', error.message);
+  //     Alert.alert('Error verifying OTP', error.message);
+  //   }
+  // };
+
+  // return (
+  //   <View style={styles.container}>
+  //     <View style={{margin: moderateScale(20)}}>
+  //       <Text style={[styles.HeaderText, styles.header]}>Tenants</Text>
+  //     </View>
+
+  //     <FlatList
+  //       data={CreateTenantsSteps}
+  //       horizontal
+  //       ref={flatListRef}
+  //       scrollEnabled={false}
+  //       showsHorizontalScrollIndicator={false}
+  //       pagingEnabled
+  //       renderItem={({item}) => (
+  //         <View style={styles.MainFullWidth}>
+  //           <View style={styles.Box}>
+  //             <View
+  //               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+  //               <Text style={[styles.Title, {marginRight: moderateScale(20)}]}>
+  //                 {item?.title}
+  //               </Text>
+  //             </View>
+  //             <View style={styles.PHoneViewHandle}>
+  //               {item.type === 'phonenumber' && (
+  //                 <TextInput
+  //                   placeholder="Enter 10-digit mobile number"
+  //                   style={styles.TextInputPhone}
+  //                   maxLength={10}
+  //                   placeholderTextColor={Colors.WHITE}
+  //                   onChangeText={phonenumberfun}
+  //                   keyboardType="number-pad"
+  //                   value={Phonenumber}
+  //                 />
+  //               )}
+
+  //               {item.type === 'OTP' && (
+  //                 <View style={{marginLeft: moderateScale(-8)}}>
+  //                   <OtpInput
+  //                     numberOfDigits={6}
+  //                     placeholder="*"
+  //                     onTextChange={OTPHandle}
+  //                     theme={{
+  //                       placeholderTextStyle: {color: Colors.WHITE},
+  //                       containerStyle: {marginTop: 50},
+  //                       pinCodeTextStyle: {color: Colors.WHITE},
+  //                     }}
+  //                   />
+  //                 </View>
+  //               )}
+
+  //               <TouchableOpacity
+  //                 onPress={item.type === 'phonenumber' ? sendOtp : verifyOtp}
+  //                 disabled={item?.disbled}
+  //                 style={[
+  //                   styles.Button,
+  //                   {
+  //                     backgroundColor: !item.disbled
+  //                       ? Colors.BLUE
+  //                       : Colors.GRAY85,
+  //                   },
+  //                 ]}>
+  //                 <Text style={styles.BTNTEXT}>{item?.buttonText}</Text>
+  //               </TouchableOpacity>
+  //             </View>
+  //           </View>
+  //         </View>
+  //       )}
+  //     />
+  //   </View>
+  // );
+
+  return (
+    <ImageBackground
+      source={require('../assets/image/Tbackground.png')} // Replace with your actual image path
+      style={styles.backgroundImage}
+      resizeMode="cover">
+      <View style={styles.overlay}>
+        <View style={{margin: moderateScale(20)}}>
+          <Text style={[styles.HeaderText, styles.header]}>Tenants</Text>
+        </View>
+
+        <FlatList
+          data={CreateTenantsSteps}
+          horizontal
+          ref={flatListRef}
+          scrollEnabled={false}
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+          renderItem={({item}) => (
+            <View style={styles.MainFullWidth}>
+              <View style={styles.Box}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text
+                    style={[styles.Title, {marginRight: moderateScale(20)}]}>
+                    {item?.title}
+                  </Text>
+                </View>
+                <View style={styles.PHoneViewHandle}>
+                  {item.type === 'phonenumber' && (
+                    <TextInput
+                      placeholder="Enter 10-digit mobile number"
+                      style={styles.TextInputPhone}
+                      maxLength={10}
+                      placeholderTextColor={Colors.BACKDROP}
+                      onChangeText={phonenumberfun}
+                      keyboardType="number-pad"
+                      value={Phonenumber}
+                    />
+                  )}
+
+                  {item.type === 'OTP' && (
+                    <View style={{marginLeft: moderateScale(-8)}}>
+                      <OtpInput
+                        numberOfDigits={6}
+                        placeholder="*"
+                        onTextChange={OTPHandle}
+                        theme={{
+                          placeholderTextStyle: {color: Colors.BLACK},
+                          containerStyle: {marginTop: 50},
+                          pinCodeTextStyle: {color: Colors.BLACK},
+                        }}
+                      />
+                      <Pressable
+                        style={{marginTop: 8}}
+                        onPress={() => navigate('TenantScreen')}>
+                        <Text style={{}}>
+                          Change Mobile Number ? {Phonenumber}
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+
+                  <TouchableOpacity
+                    onPress={item.type === 'phonenumber' ? sendOtp : verifyOtp}
+                    disabled={item?.disbled}
+                    style={[
+                      styles.Button,
+                      {
+                        backgroundColor: !item.disbled
+                          ? Colors.BLUE
+                          : Colors.GRAY85,
+                      },
+                    ]}>
+                    <Text style={styles.BTNTEXT}>{item?.buttonText}</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          )}
+        />
+      </View>
+    </ImageBackground>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  backgroundImage: {
+    flex: 1,
+    width: screenWidth,
+    height: screenHeight,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.05)',
+  },
+  header: {
+    fontSize: moderateScale(26),
+    fontWeight: '800',
+    fontFamily: Fonts.POPPINS_BOLD,
+    color: Colors.WHITE,
+  },
+  MainFullWidth: {
+    width: widthPercentageToDP(100),
+    marginTop: heightPercentageToDP(15),
+  },
+  Box: {
+    width: screenWidth * 0.8,
+    alignSelf: 'center',
+    backgroundColor: '#FFF',
+    borderRadius: moderateScale(8),
+    padding: moderateScale(20),
+
+    // iOS Shadow
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4.65,
+
+    // Android Shadow
+    elevation: 6,
+  },
+
+  Title: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: Colors.BACKDROP,
+    fontFamily: Fonts.POPPINS_REGULAR,
+  },
+  PHoneViewHandle: {
+    gap: 50,
+  },
+  TextInputPhone: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: Colors.BACKDROP,
+    borderRadius: 7,
+    padding: 10,
+    marginTop: 20,
+    color: Colors.BLACK,
+  },
+  Button: {
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 7,
+  },
+  BTNTEXT: {
+    fontSize: 15,
+    color: Colors.WHITE,
+    fontWeight: '500',
+    fontFamily: Fonts.POPPINS_BOLD,
+  },
+});
