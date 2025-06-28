@@ -2,17 +2,11 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'reac
 import React, { useState } from 'react'
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { Colors, Fonts } from '../utils/Theme';
-<<<<<<< HEAD
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-=======
-
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
->>>>>>> c5da939 (Tenants background Change .......)
+
 export default function RentManagement() {
   const [ActiveStatus,setActiveStatu] = useState(0);
   return (

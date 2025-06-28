@@ -23,5 +23,6 @@ export const Images = {
     RMONEY: require('./RMONEY.png'),
     RUSER: require('./RUSER.png'),
     RTHREELINE: require('./RTHREELINE.png'),
+    Warnings:require('./Warnnings.png')
 
 }

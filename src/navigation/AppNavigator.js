@@ -9,6 +9,7 @@ import RoomsScreen from '../screen/RoomsScreen';
 import RentManagement from '../screen/RentManagement';
 import TenantScreen from '../screen/TenantScreen';
 import UserImageCapture from '../component/UserImageCapture';
+import PaymentManagament from '../screen/PaymentManagament';
 
 
 export default function AppNavigator() {
@@ -18,7 +19,7 @@ export default function AppNavigator() {
 
     return (
         <>
-            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='SplashScreen'>
+            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='PaymentManagament'>
                 <Stack.Screen name='HomeScreen' component={HomeScreen} />
                 <Stack.Screen name='SplashScreen' component={SplashScreen} />
                 <Stack.Screen name='DrawerNavigator' component={DrawerNavigator} />
@@ -26,6 +27,7 @@ export default function AppNavigator() {
                 <Stack.Screen name='Rent Management' component={RentManagement} />
                 <Stack.Screen name='TenantScreen' component={TenantScreen} />
                 <Stack.Screen name='UserImageCapture' component={UserImageCapture} />
+                <Stack.Screen name='PaymentManagament' component={PaymentManagament} />
             </Stack.Navigator>
         </>
     )
