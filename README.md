@@ -40,36 +40,6 @@ https://www.textlocal.in/signup
 
 
 
-// sendOtp.js
-const axios = require('axios');
-const express = require('express');
-const app = express();
-app.use(express.json());
-
-const apiKey = 'your_textlocal_api_key';
-
-app.post('/send-otp', async (req, res) => {
-  const { phone } = req.body;
-  const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
-
-  const message = `Your OTP code is ${otp}`;
-
-  try {
-    await axios.get(`https://api.textlocal.in/send/`, {
-      params: {
-        apikey: apiKey,
-        numbers: phone,
-        message,
-        sender: 'TXTLCL', // or your approved sender
-      },
-    });
-    res.json({ success: true, otp }); // You can hash OTP or store it in DB
-  } catch (err) {
-    res.status(500).json({ success: false, message: 'Failed to send OTP' });
-  }
-});
-
-app.listen(3000, () => console.log('Server running on port 3000'));
 
 
 
@@ -77,35 +47,12 @@ app.listen(3000, () => console.log('Server running on port 3000'));
 
 
 
-const sendOtp = async () => {
-  if (Phonenumber.length < 10) {
-    Alert.alert('Enter valid 10-digit number');
-    return;
-  }
-
-  try {
-    const response = await fetch('http://<your-backend-url>/send-otp', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ phone: `+91${Phonenumber}` }),
-    });
-
-    const data = await response.json();
-    if (data.success) {
-      setOTP(data.otp); // for testing only, in real app don’t show or store this
-      const newIndex = currentIndex + 1;
-      flatListRef.current?.scrollToIndex({ index: newIndex, animated: true });
-      setCurrentIndex(newIndex);
-    } else {
-      Alert.alert('Failed to send OTP');
-    }
-  } catch (err) {
-    Alert.alert('Network error');
-  }
-};
 
 
 
+
+
+<<<<<<< HEAD
 Payment Management file code
 
 import { View, Text, StyleSheet, TextInput, Modal, TouchableOpacity, Image, ScrollView } from 'react-native'
@@ -392,3 +339,264 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12
     }
 })
+=======
+
+
+
+
+
+      <Modal
+        transparent
+        animationType="fade"
+        visible={isFiltter}
+        onRequestClose={() => setIsFiltter(false)}>
+        <View
+          style={{
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <ScrollView
+            style={{
+              width: screenWidth * 0.9,
+              backgroundColor: '#fff',
+              borderRadius: 10,
+              padding: 20,
+            }}>
+            {/* Header */}
+            <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 10}}>
+              Filter Room
+            </Text>
+
+            {/* Room Type */}
+            <Text style={{fontSize: 16, fontWeight: '600', marginTop: 10}}>
+              Room Type
+            </Text>
+            <View style={{flexDirection: 'row', marginTop: 8}}>
+              {['Single', 'Double'].map(type => (
+                <TouchableOpacity
+                  key={type}
+                  style={{
+                    flex: 1,
+                    padding: 10,
+                    marginHorizontal: 4,
+                    borderRadius: 8,
+                    backgroundColor:
+                      selectedRoomType === type ? '#5B7CE9' : '#eee',
+                  }}
+                  onPress={() => setSelectedRoomType(type)}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: selectedRoomType === type ? '#fff' : '#000',
+                    }}>
+                    {type}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Status */}
+            <Text style={{fontSize: 16, fontWeight: '600', marginTop: 20}}>
+              Status
+            </Text>
+            <View style={{flexDirection: 'row', marginTop: 8}}>
+              {['Vacant', 'Occupied'].map(status => (
+                <TouchableOpacity
+                  key={status}
+                  style={{
+                    flex: 1,
+                    padding: 10,
+                    marginHorizontal: 4,
+                    borderRadius: 8,
+                    backgroundColor:
+                      selectedStatus === status ? '#5B7CE9' : '#eee',
+                  }}
+                  onPress={() => setSelectedStatus(status)}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: selectedStatus === status ? '#fff' : '#000',
+                    }}>
+                    {status}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Rent Type */}
+            <Text style={{fontSize: 16, fontWeight: '600', marginTop: 20}}>
+              Rent Type
+            </Text>
+            <View style={{flexDirection: 'row', marginTop: 8}}>
+              {['Monthly', 'PerDay'].map(rent => (
+                <TouchableOpacity
+                  key={rent}
+                  style={{
+                    flex: 1,
+                    padding: 10,
+                    marginHorizontal: 4,
+                    borderRadius: 8,
+                    backgroundColor:
+                      selectedRentType === rent ? '#5B7CE9' : '#eee',
+                  }}
+                  onPress={() => setSelectedRentType(rent)}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: selectedRentType === rent ? '#fff' : '#000',
+                    }}>
+                    {rent}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Floor Number Input */}
+            <Text style={{fontWeight: '600', marginTop: 10}}>Floor Number</Text>
+            <TextInput
+              placeholder="Enter Floor Number 0 to 3"
+              placeholderTextColor={'#ccc'}
+              value={floorNumber}
+              onChangeText={setFloorNumber}
+              style={{
+                borderWidth: 1,
+                borderColor: '#ccc',
+                borderRadius: 6,
+                padding: 8,
+                marginTop: 5,
+              }}
+              keyboardType="numeric"
+            />
+
+            {/* Room Number Input */}
+            <Text style={{fontWeight: '600', marginTop: 10}}>Room Number</Text>
+            <TextInput
+              placeholder="Enter Room Number"
+              placeholderTextColor={'#ccc'}
+              value={roomNumber}
+              onChangeText={setRoomNumber}
+              style={{
+                borderWidth: 1,
+                borderColor: '#ccc',
+                borderRadius: 6,
+                padding: 8,
+                marginTop: 5,
+              }}
+              keyboardType="numeric"
+            />
+
+            {/* Bed Number Input */}
+            <Text style={{fontWeight: '600', marginTop: 10}}>Bed Number</Text>
+            <TextInput
+              placeholder="Enter Bed Number 1 to 12"
+              placeholderTextColor={'#ccc'}
+              value={bedNumber}
+              onChangeText={setBedNumber}
+              style={{
+                borderWidth: 1,
+                borderColor: '#ccc',
+                borderRadius: 6,
+                padding: 8,
+                marginTop: 5,
+              }}
+              keyboardType="numeric"
+            />
+
+            {/* Rent Amount (₹/month) */}
+            <Text style={{fontWeight: '600', marginTop: 10}}>
+              Rent Amount (₹/month)
+            </Text>
+            <TextInput
+              placeholder="Enter Rent Amount (₹/month)"
+              placeholderTextColor={'#ccc'}
+              value={roomAmountNumber}
+              onChangeText={setRoomAmountNumber}
+              style={{
+                borderWidth: 1,
+                borderColor: '#ccc',
+                borderRadius: 6,
+                padding: 8,
+                marginTop: 5,
+              }}
+              keyboardType="numeric"
+            />
+
+            {/* select Filled */}
+            <Text style={{fontWeight: '600', marginTop: 20}}>Amenities</Text>
+            <MultiSelect
+              style={{
+                borderColor: isFocus ? '#5B7CE9' : '#ccc',
+                borderWidth: 1,
+                borderRadius: 8,
+                paddingHorizontal: 10,
+                paddingVertical: 8,
+                marginTop: 12,
+              }}
+              placeholderStyle={{color: '#aaa'}}
+              selectedTextStyle={{color: '#000'}}
+              inputSearchStyle={{
+                height: 40,
+                borderColor: '#ccc',
+                borderWidth: 1,
+                paddingLeft: 10,
+                borderRadius: 6,
+              }}
+              iconStyle={{tintColor: '#5B7CE9'}}
+              activeColor="#5B7CE9"
+              data={amenitiesData.map(item => ({
+                label: item.name,
+                value: item.id,
+              }))}
+              labelField="label"
+              valueField="value"
+              placeholder="Select Amenities"
+              value={Amenities}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={item => {
+                setAmenities(item);
+              }}
+              selectedStyle={{
+                borderRadius: 12,
+                backgroundColor: '#5B7CE9',
+                padding: 6,
+                margin: 4,
+              }}
+              maxHeight={300}
+              search
+              showsVerticalScrollIndicator={false}
+            />
+
+            {/* Cancel / Apply */}
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                marginTop: 30,
+              }}>
+              <TouchableOpacity
+                onPress={() => [setIsFiltter(false), {handalSubmitData}]}>
+                <Text style={{marginRight: 20, color: '#999'}}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  // TODO: apply filter logic using selectedRoomType, selectedStatus, selectedRentType
+                  setIsFiltter(false);
+                  console.log(
+                    selectedRentType,
+                    selectedStatus,
+                    selectedRoomType,
+                    roomNumber,
+                    bedNumber,
+                  );
+                }}>
+                <Text style={{color: '#5B7CE9', fontWeight: 'bold'}}>
+                  Apply
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
+      </Modal>
+>>>>>>> 4f66fa1 (Some Cahnge on Filtter Room Screen.....!!!!K)

@@ -18,8 +18,10 @@ import {moderateScale, screenWidth} from '../utils/Metrics';
 import TextRecognition, {
   TextRecognitionScript,
 } from '@react-native-ml-kit/text-recognition';
+import {useNavigation} from '@react-navigation/native';
 
 const UserImageCapture = () => {
+  const {navigate} = useNavigation();
   const [tenantPhoto, setTenantPhoto] = useState(null);
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [isCameraActive, setIsCameraActive] = useState(true);
@@ -224,6 +226,7 @@ const UserImageCapture = () => {
   const handleSubmit = () => {
     Alert.alert('Form Submitted', JSON.stringify(formData, null, 2));
     console.log('Form submited!');
+    navigate('PaymentManagement');
   };
 
   if (hasCameraPermission === null) {

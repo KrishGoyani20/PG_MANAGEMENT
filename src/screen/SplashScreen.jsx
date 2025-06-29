@@ -7,14 +7,14 @@ import Video from 'react-native-video';
 
 export default function SplashScreen() {
   const {replace} = useNavigation();
-  // useEffect(() => {
-  //   let time = setTimeout(() => {
-  //     replace('HomeScreen');
-  //   }, 1500);
-  //   return () => {
-  //     clearTimeout(time);
-  //   };
-  // }, []);
+  useEffect(() => {
+    let time = setTimeout(() => {
+      replace('HomeScreen');
+    }, 1500);
+    return () => {
+      clearTimeout(time);
+    };
+  }, []);
   return (
     <View style={styles.container}>
       <StatusBar barStyle={'dark-content'} />

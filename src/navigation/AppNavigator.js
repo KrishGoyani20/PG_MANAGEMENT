@@ -10,6 +10,11 @@ import RentManagement from '../screen/RentManagement';
 import TenantScreen from '../screen/TenantScreen';
 import UserImageCapture from '../component/UserImageCapture';
 import PaymentManagament from '../screen/PaymentManagament';
+import PaymentManagement from '../component/PaymentManagement';
+import PGselectBad from '../component/PGselectBad';
+import DRselect from '../component/DRselect';
+import DRManagement from '../component/DRManagement';
+import CheckSummaryScreen from '../component/CheckSummaryScreen';
 
 
 export default function AppNavigator() {
@@ -28,6 +33,12 @@ export default function AppNavigator() {
                 <Stack.Screen name='TenantScreen' component={TenantScreen} />
                 <Stack.Screen name='UserImageCapture' component={UserImageCapture} />
                 <Stack.Screen name='PaymentManagament' component={PaymentManagament} />
+                <Stack.Screen name='DRManagement' component={DRManagement} />
+                <Stack.Screen name='PaymentManagement' component={PaymentManagement} />
+                <Stack.Screen name='CheckSummaryScreen' component={CheckSummaryScreen} />
+
+                <Stack.Screen name='PGselectBad' component={PGselectBad} />
+                <Stack.Screen name='DRselect' component={DRselect} />
             </Stack.Navigator>
         </>
     )
