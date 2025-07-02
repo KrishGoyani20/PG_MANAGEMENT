@@ -55,7 +55,7 @@ const DRManagement = () => {
                         alignItems: 'center',
                         marginVertical: 10,
                     }}
-                    // onPress={() => navigate('PaymentManagement')}
+                        onPress={() => navigate('CheckSummaryScreen')}
                     >
                         <Text style={{ color: '#FFF', fontSize: 16, fontWeight: 'bold' }}>Pay Now</Text>
                     </TouchableOpacity>
@@ -66,7 +66,7 @@ const DRManagement = () => {
                         borderRadius: 10,
                         justifyContent: 'center',
                         alignItems: 'center',
-                    }} onPress={() => navigate('RoomsScreen')}>
+                    }} onPress={() => navigate('Rooms')}>
                         <Text style={{ color: '#FFF', fontSize: 16, fontWeight: 'bold' }}>Cancel</Text>
                     </TouchableOpacity>
                 </View>

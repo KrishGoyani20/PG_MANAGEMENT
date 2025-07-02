@@ -24,9 +24,9 @@ export default function AppNavigator() {
 
     return (
         <>
-            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='PaymentManagament'>
-                <Stack.Screen name='HomeScreen' component={HomeScreen} />
+            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='SplashScreen'>
                 <Stack.Screen name='SplashScreen' component={SplashScreen} />
+                <Stack.Screen name='HomeScreen' component={HomeScreen} />
                 <Stack.Screen name='DrawerNavigator' component={DrawerNavigator} />
                 <Stack.Screen name='Rooms' component={RoomsScreen} />
                 <Stack.Screen name='Rent Management' component={RentManagement} />

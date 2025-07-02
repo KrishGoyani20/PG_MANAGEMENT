@@ -18,6 +18,7 @@ import {Images} from '../assets/image/image';
 import Modal from 'react-native-modal';
 import {MultiSelect} from 'react-native-element-dropdown';
 import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export default function RoomsScreen() {
   const {navigate} = useNavigation();
@@ -34,92 +35,94 @@ export default function RoomsScreen() {
 
   const [isFocus, setIsFocus] = useState(false);
   const [isTrueRound, setIsTrueRound] = useState(false);
-  const [roomTypeModalVisible, setRoomTypeModalVisible] = useState(false);
   const [modalNewUpdate, setModalNewUpdate] = useState(false);
-  
+
+  const [filterData, setFiltterData] = useState(null);
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
+
   const RoomNumber = [
     {
       id: 1,
       image: Images.RBAD,
       badW: Images.RBAD2,
-      num: 1,
+      num: 101,
       isBooked: false,
     },
     {
       id: 2,
       image: Images.RBAD,
       badW: Images.RBAD2,
-      num: 2,
+      num: 102,
       isBooked: false,
     },
     {
       id: 3,
       image: Images.RBAD,
       badW: Images.RBAD2,
-      num: 3,
+      num: 103,
       isBooked: false,
     },
     {
       id: 4,
       image: Images.RBAD,
       badW: Images.RBAD2,
-      num: 4,
+      num: 104,
       isBooked: false,
     },
     {
       id: 5,
       image: Images.RBAD,
       badW: Images.RBAD2,
-      num: 5,
+      num: 105,
       isBooked: false,
     },
     {
       id: 6,
       image: Images.RBAD,
       badW: Images.RBAD2,
-      num: 6,
+      num: 106,
       isBooked: false,
     },
     {
       id: 7,
       image: Images.RBAD,
       badW: Images.RBAD2,
-      num: 7,
+      num: 107,
       isBooked: false,
     },
     {
       id: 8,
       image: Images.RBAD,
       badW: Images.RBAD2,
-      num: 8,
+      num: 108,
       isBooked: false,
     },
     {
       id: 9,
       image: Images.RBAD,
       badW: Images.RBAD2,
-      num: 9,
+      num: 109,
       isBooked: false,
     },
     {
       id: 10,
       image: Images.RBAD,
       badW: Images.RBAD2,
-      num: 10,
+      num: 110,
       isBooked: false,
     },
     {
       id: 11,
       image: Images.RBAD,
       badW: Images.RBAD2,
-      num: 11,
+      num: 111,
       isBooked: false,
     },
     {
       id: 12,
       image: Images.RBAD,
       badW: Images.RBAD2,
-      num: 12,
+      num: 112,
       isBooked: false,
     },
   ];
@@ -145,7 +148,7 @@ export default function RoomsScreen() {
   ];
 
   const handalSubmitData = () => {
-    console.log('Filtered Data -->', {
+    const filteredData = {
       RoomType: selectedRoomType,
       Status: selectedStatus,
       RentType: selectedRentType,
@@ -154,7 +157,11 @@ export default function RoomsScreen() {
       capacity: capacity,
       RentAmount: roomAmountNumber,
       Amenities,
-    });
+    };
+
+    setFiltterData(filteredData); // Save filter data
+    setIsFilterApplied(true); // ✅ Mark filter as applied
+    console.log(filteredData);
   };
 
   const PGComponent = () => {
@@ -190,63 +197,239 @@ export default function RoomsScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={{margin: moderateScale(20)}}>
-        <Text style={[styles.HeaderText, styles.header]}>Room</Text>
-      </View>
-
-      <TouchableOpacity
-        onPress={() => setIsFiltter(true)}
-        style={{
-          width: screenWidth * 0.9,
-          backgroundColor: Colors.WHITE,
-          padding: moderateScale(8),
-          borderRadius: moderateScale(10),
-          flexDirection: 'row',
-          gap: moderateScale(14),
-        }}>
-        <Image style={{width: 24, height: 24}} source={Images.RFILTER} />
-        <Text
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          // backgroundColor: Colors.CHARCOLEBLUE,
+          paddingHorizontal: moderateScale(20),
+          paddingBottom: moderateScale(50),
+        }}
+        showsVerticalScrollIndicator={false}>
+        <View
           style={{
-            fontSize: moderateScale(18),
-            fontWeight: 700,
-            color: Colors.BLACK,
+            marginHorizontal: moderateScale(20),
+            marginBottom: moderateScale(20),
           }}>
-          Filter
-        </Text>
-      </TouchableOpacity>
-
-      <View
-        style={{
-          marginTop: moderateScale(50),
-          width: screenWidth * 0.9,
-          height: screenHeight / 4,
-          backgroundColor: Colors.GUNMETAL,
-          borderRadius: moderateScale(8),
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <View>
-          <Image
-            style={{width: moderateScale(72), height: moderateScale(72)}}
-            source={Images.TROOM}
-          />
+          <Text style={[styles.HeaderText, styles.header]}>Room</Text>
         </View>
-        <Text
+
+        {!isFilterApplied && (
+          <TouchableOpacity
+            onPress={() => setIsFiltter(true)}
+            style={{
+              width: screenWidth * 0.9,
+              backgroundColor: Colors.WHITE,
+              padding: moderateScale(8),
+              borderRadius: moderateScale(10),
+              flexDirection: 'row',
+              gap: moderateScale(14),
+            }}>
+            <Image style={{width: 24, height: 24}} source={Images.RFILTER} />
+            <Text
+              style={{
+                fontSize: moderateScale(18),
+                fontWeight: 700,
+                color: Colors.BLACK,
+              }}>
+              Filter
+            </Text>
+          </TouchableOpacity>
+        )}
+        {/* 
+        {filterData && (
+          <View style={{marginVertical: moderateScale(20)}}>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: moderateScale(22),
+                fontWeight: 500,
+                color: '#fff',
+              }}>
+              Filled Data
+            </Text>
+
+            <Text style={styles.filterText}>Room Type:</Text>
+            <View style={styles.TextBox}>
+              <Text style={styles.filterText}>{filterData.RoomType}</Text>
+            </View>
+
+            <Text style={styles.filterText}>Status: </Text>
+            <View style={styles.TextBox}>
+              <Text style={styles.filterText}>{filterData.Status}</Text>
+            </View>
+
+            <Text style={styles.filterText}>Rent Type:</Text>
+            <View style={styles.TextBox}>
+              <Text style={styles.filterText}>{filterData.RentType}</Text>
+            </View>
+
+            <Text style={styles.filterText}>Floor Number:</Text>
+            <View style={styles.TextBox}>
+              <Text style={styles.filterText}>{filterData.FloorNumber}</Text>
+            </View>
+
+            <Text style={styles.filterText}>Room Number:</Text>
+            <View style={styles.TextBox}>
+              <Text style={styles.filterText}>{filterData.RoomNumber}</Text>
+            </View>
+
+            <Text style={styles.filterText}>Capacity:</Text>
+            <View style={styles.TextBox}>
+              <Text style={styles.filterText}>{filterData.capacity}</Text>
+            </View>
+
+            <Text style={styles.filterText}>Rent Amount:</Text>
+            <View style={styles.TextBox}>
+              <Text style={styles.filterText}>{filterData.RentAmount}</Text>
+            </View>
+
+            <Text style={styles.filterText}>Amenities:</Text>
+
+            <View style={styles.TextBox}>
+              <Text style={styles.filterText}>
+                {filterData.Amenities?.join(', ')}
+              </Text>
+            </View>
+          </View>
+        )} */}
+
+        {filterData && (
+          <View
+            style={{
+              marginVertical: moderateScale(20),
+              backgroundColor: '#fff',
+              borderRadius: 12,
+              padding: moderateScale(16),
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 2},
+              shadowOpacity: 0.1,
+              shadowRadius: 4,
+              elevation: 4,
+            }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: moderateScale(20),
+                fontWeight: '700',
+                marginBottom: moderateScale(12),
+                color: '#333',
+              }}>
+              Filtered Room Details
+            </Text>
+
+            <View style={{marginBottom: moderateScale(10)}}>
+              <Text style={styles.filterLabel}>Room Type</Text>
+              <Text style={styles.filterValue}>{filterData.RoomType}</Text>
+            </View>
+
+            <View style={{marginBottom: moderateScale(10)}}>
+              <Text style={styles.filterLabel}>Status</Text>
+              <Text style={styles.filterValue}>{filterData.Status}</Text>
+            </View>
+
+            <View style={{marginBottom: moderateScale(10)}}>
+              <Text style={styles.filterLabel}>Rent Type</Text>
+              <Text style={styles.filterValue}>{filterData.RentType}</Text>
+            </View>
+
+            <View style={{marginBottom: moderateScale(10)}}>
+              <Text style={styles.filterLabel}>Floor Number</Text>
+              <Text style={styles.filterValue}>{filterData.FloorNumber}</Text>
+            </View>
+
+            <View style={{marginBottom: moderateScale(10)}}>
+              <Text style={styles.filterLabel}>Room Number</Text>
+              <Text style={styles.filterValue}>{filterData.RoomNumber}</Text>
+            </View>
+
+            <View style={{marginBottom: moderateScale(10)}}>
+              <Text style={styles.filterLabel}>Capacity</Text>
+              <Text style={styles.filterValue}>{filterData.capacity}</Text>
+            </View>
+
+            <View style={{marginBottom: moderateScale(10)}}>
+              <Text style={styles.filterLabel}>Rent Amount</Text>
+              <Text style={styles.filterValue}>₹ {filterData.RentAmount}</Text>
+            </View>
+
+            <View style={{marginBottom: moderateScale(10)}}>
+              <Text style={styles.filterLabel}>Amenities</Text>
+              <Text style={styles.filterValue}>
+                {filterData.Amenities && filterData.Amenities.length > 0
+                  ? amenitiesData
+                      .filter(item => filterData.Amenities.includes(item.id))
+                      .map(item => item.name)
+                      .join(', ')
+                  : 'None'}
+              </Text>
+            </View>
+          </View>
+        )}
+
+        <View
           style={{
-            color: Colors.WHITE,
-            textAlign: 'center',
-            marginHorizontal: moderateScale(30),
-            marginVertical: moderateScale(10),
+            marginTop: moderateScale(20),
+            width: screenWidth * 0.9,
+            height: screenHeight / 3,
+            backgroundColor: Colors.BLUEGRAY,
+            borderRadius: moderateScale(8),
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-          No rooms found. Add your room to get started.
-        </Text>
-        <TouchableOpacity
-          style={[styles.Button]}
-          onPress={() => setRoomTypeModalVisible(true)}>
-          <Text style={styles.BTNTEXT}>+ Add Room</Text>
-        </TouchableOpacity>
-      </View>
+          <View>
+            <Image
+              style={{width: moderateScale(72), height: moderateScale(72)}}
+              source={Images.TROOM}
+            />
+          </View>
+          <Text
+            style={{
+              color: Colors.WHITE,
+              textAlign: 'center',
+              marginHorizontal: moderateScale(30),
+              marginVertical: moderateScale(10),
+            }}>
+            No rooms found. Add your room to get started.
+          </Text>
+          <View
+            style={{
+              width: '100%',
+              height: 'auto',
+              alignItems: 'center',
+              rowGap: moderateScale(10),
+            }}>
+            <TouchableOpacity
+              style={[styles.Button]}
+              onPress={() => {
+                PGComponent();
+              }}>
+              <Text
+                style={{
+                  color: 'white',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                }}>
+                PG Room
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.Button]}
+              onPress={() => {
+                DormitoryComponent();
+              }}>
+              <Text
+                style={{
+                  color: 'white',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                }}>
+                Dormitory
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
 
       <Modal
         transparent
@@ -277,7 +460,11 @@ export default function RoomsScreen() {
                 keyboardShouldPersistTaps="handled">
                 {/* 👇 Place all your existing modal content here 👇 */}
                 <Text
-                  style={{fontSize: 18, fontWeight: 'bold', marginBottom: 10}}>
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    marginBottom: 10,
+                  }}>
                   Filter Room
                 </Text>
 
@@ -519,93 +706,6 @@ export default function RoomsScreen() {
       <Modal
         transparent
         animationType="fade"
-        visible={roomTypeModalVisible}
-        onRequestClose={() => setRoomTypeModalVisible(false)}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'rgba(0,0,0,0.4)',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              width: '80%',
-              backgroundColor: 'white',
-              borderRadius: 12,
-              padding: 20,
-              elevation: 5,
-            }}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-                textAlign: 'center',
-                marginBottom: 20,
-              }}>
-              Select Room Type
-            </Text>
-
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#5B7CE9',
-                borderRadius: 8,
-                paddingVertical: 12,
-                marginBottom: 10,
-              }}
-              onPress={() => {
-                setRoomTypeModalVisible(false);
-                PGComponent();
-              }}>
-              <Text
-                style={{
-                  color: 'white',
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                }}>
-                PG Room
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#5B7CE9',
-                borderRadius: 8,
-                paddingVertical: 12,
-                marginBottom: 10,
-              }}
-              onPress={() => {
-                setRoomTypeModalVisible(false);
-                DormitoryComponent();
-              }}>
-              <Text
-                style={{
-                  color: 'white',
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                }}>
-                Dormitory
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{marginTop: 10}}
-              onPress={() => setRoomTypeModalVisible(false)}>
-              <Text
-                style={{
-                  color: '#999',
-                  textAlign: 'center',
-                }}>
-                Cancel
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      <Modal
-        transparent
-        animationType="fade"
         visible={modalNewUpdate}
         onRequestClose={() => setModalNewUpdate(false)}>
         <View
@@ -802,21 +902,14 @@ export default function RoomsScreen() {
           </View>
         </View>
       </Modal>
-
-      {/* Conditionally render the selected component */}
-      {/* {roomType === 'PG' && <PGComponent />} */}
-      {/* {roomType === 'Dormitory' && <DormitoryComponent />} */}
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    minHeight: screenHeight * 0.9,
-    maxHeight: screenHeight,
-    backgroundColor: Colors.CHARCOLEBLUE,
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   header: {
     width: screenWidth * 0.8,
@@ -850,5 +943,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: moderateScale(10),
+  },
+  TextBox: {
+    width: screenWidth * 0.9,
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    borderRadius: moderateScale(10),
+    padding: moderateScale(12),
+    marginBottom: moderateScale(10),
+  },
+  filterText: {
+    fontSize: moderateScale(16),
+    color: Colors.WHITE,
+    marginBottom: 5,
+    fontWeight: '500',
+  },
+
+  filterLabel: {
+    fontSize: moderateScale(14),
+    color: '#666',
+    fontWeight: '600',
+    marginBottom: 2,
+  },
+
+  filterValue: {
+    fontSize: moderateScale(16),
+    color: '#111',
+    fontWeight: '500',
   },
 });

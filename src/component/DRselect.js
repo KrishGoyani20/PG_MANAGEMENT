@@ -278,6 +278,16 @@ const DRselect = ({ route }) => {
                                 Vacant
                             </Text>
                         </View>
+                        <TouchableOpacity
+                            onPress={() => { navigate('Rooms') }}
+                            style={{
+                                width: 'auto',
+                                justifyContent: 'flex-end',
+                                alignItems: 'flex-end',
+                                paddingHorizontal: 4,
+                            }}>
+                            <Image style={{ width: moderateScale(42), height: moderateScale(42), }} source={Images.REDIT} />
+                        </TouchableOpacity>
                     </View>
                 </View>
 
@@ -487,36 +497,32 @@ const DRselect = ({ route }) => {
 
                                                 opacity: isDisabled ? 0.8 : 1,
                                             }}>
-                                            <Image
+
+                                            <View
                                                 style={{
-                                                    width: moderateScale(24),
-                                                    height: moderateScale(24),
-                                                    resizeMode: 'contain',
-                                                }}
-                                                source={
-                                                    isSelected || isCurrentlyFilled
-                                                        ? bed.badW
-                                                        : bed.image
-                                                }
-                                            />
-                                            {/* <View
-                                                style={{
-                                                    position: 'absolute',
-                                                    top: 4,
-                                                    right: 4,
-                                                    backgroundColor: '#8ED1FC',
-                                                    borderRadius: 10,
-                                                    width: 20,
-                                                    height: 20,
+                                                    width: '100%',
+                                                    // backgroundColor: '#8ED1FC',
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
                                                 }}>
-                                                <Text style={{ fontSize: 10, fontWeight: 'bold' }}>
+                                                <Image
+                                                    style={{
+                                                        width: moderateScale(24),
+                                                        height: moderateScale(24),
+                                                        resizeMode: 'contain',
+                                                    }}
+                                                    source={
+                                                        isSelected || isCurrentlyFilled
+                                                            ? bed.badW
+                                                            : bed.image
+                                                    }
+                                                />
+                                                <Text style={{ fontSize: 10, fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.4)' }}>
                                                     {filledItems.includes(bed.id)
                                                         ? filledItems.indexOf(bed.id) + 1
                                                         : bed.num}
                                                 </Text>
-                                            </View> */}
+                                            </View>
                                         </TouchableOpacity>
                                     );
                                 })}

@@ -24,12 +24,8 @@ export const Images = {
     RMONEY: require('./RMONEY.png'),
     RUSER: require('./RUSER.png'),
     RTHREELINE: require('./RTHREELINE.png'),
-<<<<<<< HEAD
-    Warnings:require('./Warnnings.png')
-
-=======
+    Warnings: require('./Warnnings.png'),
     RFLOOR: require('./floor.png'),
-    // RMONEY: require('./money.png'),
     RTRUE: require('./true.png'),
->>>>>>> 4f66fa1 (Some Cahnge on Filtter Room Screen.....!!!!K)
+    REDIT: require('./Edit.png'),
 }
