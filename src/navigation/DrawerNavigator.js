@@ -742,7 +742,7 @@ export default function DrawerView({
 const styles = StyleSheet.create({
     container: {
         width: widthPercentageToDP(80),
-        height: heightPercentageToDP(87),
+        height: heightPercentageToDP(88),
         backgroundColor: '#272C48',
         position: 'absolute',
         bottom: 0,
