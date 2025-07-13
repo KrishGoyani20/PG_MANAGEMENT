@@ -16,8 +16,9 @@ export const Images = {
     TCALENDER: require('./Tcalender.png'),
     TIDPROOF: require('./TidProof.png'),
     TROOM: require('./Trooms.png'),
+    THISTORY: require('./History.png'),
 
-
+// ek minute hu baar jaine   ok call kar je too na kar tu nath bandh rhyu kar zip banavi ne mokli deje ho have code  1 minu aapne pela chage karine push kari daiyehaha push kari de e reva de tu zip mokli dene khali 1 minute pela chnage kari nakhiye
     RBAD: require('./RBAD.png'),
     RFILTER: require('./filter.png'),
     RBAD2: require('./RBAD2.png'),
@@ -28,4 +29,19 @@ export const Images = {
     RFLOOR: require('./floor.png'),
     RTRUE: require('./true.png'),
     REDIT: require('./Edit.png'),
+    Cooler: require('./Cooler.png'),
+    TV: require('./TV.png'),
+    Curtains: require('./Curtains.png'),
+    AC: require('./AC.png'),
+    TableChair: require('./TableChair.png'),
+    Almirah: require('./Almirah.png'),
+    Washroom: require('./Washroom.png'),
+    Bed: require('./Bed.png'),
+    Mattress: require('./Mattress.png'),
+    WiFi: require('./WiFi.png'),
+    Fan: require('./Fan.png'),
+    Geyser: require('./Geyser.png'),
+    Refrigerator: require('./Refrigerator.png'),
+    Cupboard: require('./Cupboard.png'),
+ History: require('./History.png'),
 }

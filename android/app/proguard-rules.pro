@@ -1,10 +1,18 @@
-# Add project specific ProGuard rules here.
-# By default, the flags in this file are appended to flags specified
-# in /usr/local/Cellar/android-sdk/24.3.3/tools/proguard/proguard-android.txt
-# You can edit the include path and order by changing the proguardFiles
-# directive in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Firebase ke liye
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
 
-# Add any project specific keep options here:
+# React Native ke liye
+-keep class com.facebook.react.** { *; }
+-keepclassmembers class * { @com.facebook.react.uimanager.annotations.ReactProp *; }
+
+# Reanimated ke liye
+-keep class com.swmansion.reanimated.** { *; }
+
+# Vision Camera ya ML Kit agar use ho raha:
+-keep class com.rnmlkit.** { *; }
+-keep class com.mrousavy.camera.** { *; }
+
+# General reflection
+-keepattributes *Annotation*
+-keep class * extends java.lang.annotation.Annotation { *; }

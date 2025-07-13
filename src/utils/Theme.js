@@ -1,5 +1,5 @@
 export const Colors = {
-    WHITE: '#FFFFFF',
+    // WHITE: '#FFFFFF',
     PRIMARY_COLOR: '#FFCB20',
     PRIMARY_GRADIENT: ['#FFDB66', '#E9B819'],
     PRIMARY_COLOR_LIGHT: '#FDF7E4',
@@ -31,6 +31,12 @@ export const Colors = {
 
     GREEN35: '#35C625',
 
+
+    //Add this color on change UI
+    WHITEDARK: '#F5f5ef',
+    WHITELITE: 'F1f2f2',
+    BLUELITE: '#046d92',
+    REDLITE: '#a6252c',
 }
 
 export const Fonts = {
@@ -38,4 +44,5 @@ export const Fonts = {
     POPPINS_SEMIBOLD: 'Poppins-SemiBold',
     POPPINS_MEDIUM: 'Poppins-Medium',
     POPPINS_REGULAR: 'Poppins-Regular',
+    
 }

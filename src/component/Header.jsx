@@ -24,11 +24,10 @@ const Header = ({functions}) => {
   const AnimatedCard = Animated.createAnimatedComponent(TouchableOpacity);
   const [MyWidth, setMyWidth] = useState(Dimensions.get('window').width);
 
-  const [isSelected, setIsSelected] = useState(false);
   return (
     <View style={{position: 'static', top: 0, zIndex: 20}}>
       <View style={styles.HeaderMainView}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             backgroundColor: '#1d1d3b',
             padding: moderateScale(6),
@@ -40,10 +39,13 @@ const Header = ({functions}) => {
             source={Images.THREELINE}
             style={{width: moderateScale(32), height: moderateScale(32)}}
           />
-        </TouchableOpacity>
-        <Animated.View
+        </TouchableOpacity> */}
+        <View
+     
           style={styles.HederCenterStyle}
           entering={FadeInUp.duration(500).delay(200)}>
+            <TouchableOpacity    onPress={() => functions()}>
+
           <Image
             style={{
               width: moderateScale(32),
@@ -51,12 +53,13 @@ const Header = ({functions}) => {
               borderRadius: moderateScale(8),
             }}
             source={Images.SplashScreen}
-          />
+            />
+            </TouchableOpacity>
           <View>
             <Text style={styles.HeaderText}>Sebzy</Text>
             <Text style={styles.HeaderTextSmall}>PG Management</Text>
           </View>
-        </Animated.View>
+        </View>
         <TouchableOpacity
           
           style={{
@@ -67,7 +70,8 @@ const Header = ({functions}) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          onPress={() => setIsSelected(prev => !prev)}>
+          >
+          
           <Image
             style={{
               width: moderateScale(32),
@@ -106,13 +110,19 @@ export default Header;
 
 const styles = StyleSheet.create({
   HeaderMainView: {
-    flex: 1,
+       flex: 1,
     height: moderateScale(70),
-    backgroundColor: '#1B243F',
+    backgroundColor: '#046d92',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: horizontalScale(16),
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3.84,
+    elevation: 5,
+
   },
   HeaderText: {
     fontSize: moderateScale(18),

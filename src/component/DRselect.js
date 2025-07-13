@@ -279,7 +279,7 @@ const DRselect = ({ route }) => {
                             </Text>
                         </View>
                         <TouchableOpacity
-                            onPress={() => { navigate('Rooms') }}
+                            onPress={() => { navigate('RoomsScreen') }}
                             style={{
                                 width: 'auto',
                                 justifyContent: 'flex-end',

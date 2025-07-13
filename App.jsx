@@ -1,10 +1,10 @@
 import {View, SafeAreaView, Text, StatusBar} from 'react-native';
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import AppNavigator from './src/navigation/AppNavigator';
 import {NavigationContainer} from '@react-navigation/native';
 import {Colors} from './src/utils/Theme';
 import firebase from '@react-native-firebase/app';
-
+import NewTenants from './src/component/NewTenants';
 const App = () => {
   const firebaseConfig = {
     apiKey: 'AIzaSyB1EIXpIGEdAS3mJbN5JK1nJl8ANmi11xw', // ✅ must be correct
@@ -28,6 +28,7 @@ const App = () => {
         translucent={true}
       />
       <AppNavigator />
+      {/* <NewTenants /> */}
     </NavigationContainer>
   );
 };
