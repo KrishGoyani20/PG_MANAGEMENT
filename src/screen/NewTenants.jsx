@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; // make sure you have vector icons installed
 import {moderateScale, screenWidth} from '../utils/Metrics'; // adjust to your utils or remove
 
 const NewTenants = () => {
+
+  useEffect(() => {
+    
+  }, []);
   return (
     <View style={styles.container}>
       {/* Top Profile Header */}
@@ -17,7 +21,7 @@ const NewTenants = () => {
           />
         </View>
         <View style={styles.nameStatus}>
-          <Text style={styles.name}>Nagesh Baliboyina</Text>
+          <Text style={styles.name}>Dummy Data</Text>
           <View style={styles.statusBadge}>
             <Icon name="close-circle" size={14} color="#fff" />
             <Text style={styles.statusText}>Inactive</Text>
@@ -42,11 +46,15 @@ const NewTenants = () => {
         {/* <DetailItem icon="layers-outline" label="Floor:" value="1" /> */}
         {/* <DetailItem icon="bed-outline" label="Room:" value="1" /> */}
         <DetailItem icon="bed-outline" label="BedNo:" value="3" />
-        <DetailItem icon="call-outline" label="" value="9248180138" />
-        <DetailItem icon="mail-outline" label="" value="nagesh@gmail.com" />
-        <DetailItem icon="calendar-outline" label="Joined:" value="7/11/2025" />
+        <DetailItem icon="call-outline" label="" value="0123456789" />
+        <DetailItem icon="mail-outline" label="" value="test@gmail.com" />
+        <DetailItem
+          icon="calendar-outline"
+          label="Joined:"
+          value="13/11/2025"
+        />
         <DetailItem icon="card-outline" label="ID:" value="Aadhar" />
-        <DetailItem icon="briefcase-outline" label="" value="Software" />
+        <DetailItem icon="briefcase-outline" label="" value="Developer" />
       </View>
 
       {/* Buttons */}
@@ -190,4 +198,3 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-

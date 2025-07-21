@@ -16,10 +16,10 @@ import CheckSummaryScreen from '../component/CheckSummaryScreen';
 import LoginScreen from '../screen/LoginScreen';
 import RegisterScreen from '../screen/RegisterScreen';
 import TransactionScreen from '../component/TransactionScreen';
-import NewPGRoom from '../component/PGselectBad';
+// import NewPGRoom from '../component/PGselectBad';
 import PaymentManagament from '../component/PaymentManagement';
-import NewTenants from '../component/NewTenants';
 import ScreenContextFun from '../utils/Context/Screen';
+import NewPGRoom from '../screen/NewPGRoom';
 
 
 export default function AppNavigator() {
@@ -29,17 +29,17 @@ export default function AppNavigator() {
 
     return (
         <>
-                <ScreenContextFun>
-            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='SplashScreen'>
+            <ScreenContextFun>
+                <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='SplashScreen'>
                     <Stack.Screen name='SplashScreen' component={SplashScreen} />
                     <Stack.Screen name='LoginScreen' component={LoginScreen} />
                     <Stack.Screen name='RegisterScreen' component={RegisterScreen} />
-                    
+
 
                     <Stack.Screen name='DrawerNavigator' component={DrawerNavigator} />
                     <Stack.Screen name='HomeScreen' component={HomeScreen} />
                     <Stack.Screen name='RoomsScreen' component={RoomsScreen} />
-                    {/* <Stack.Screen name='TenantScreen' component={TenantScreen} /> */}
+                    <Stack.Screen name='TenantScreen' component={TenantScreen} />
                     <Stack.Screen name='TransactionScreen' component={TransactionScreen} />
 
                     <Stack.Screen name='Rent Management' component={RentManagement} />
@@ -49,12 +49,13 @@ export default function AppNavigator() {
                     <Stack.Screen name='CheckSummaryScreen' component={CheckSummaryScreen} />
 
                     <Stack.Screen name='PGselectBad' component={PGselectBad} />
-                    <Stack.Screen name='NewPGRoom' component={NewPGRoom} />
+                    {/* <Stack.Screen name='NewPGRoom' component={NewPGRoom} /> */}
                     {/* <Stack.Screen name='NewTenants' component={NewTenants} /> */}
                     <Stack.Screen name='DRselect' component={DRselect} />
-                    
-            </Stack.Navigator>
-                </ScreenContextFun>
+                    <Stack.Screen name='NewPGRoom' component={NewPGRoom} />
+
+                </Stack.Navigator>
+            </ScreenContextFun>
         </>
     )
 }

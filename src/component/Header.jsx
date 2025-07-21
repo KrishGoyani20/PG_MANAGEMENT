@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Animated, {
   FadeInLeft,
   FadeInRight,
@@ -15,14 +15,33 @@ import Animated, {
 import {Images} from '../assets/image/image';
 import {horizontalScale, moderateScale} from '../utils/Metrics';
 import {Fonts} from '../utils/Theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSelector} from 'react-redux';
 
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 
 const Header = ({functions}) => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
-  const AnimatedCard = Animated.createAnimatedComponent(TouchableOpacity);
-  const [MyWidth, setMyWidth] = useState(Dimensions.get('window').width);
+  // const AnimatedCard = Animated.createAnimatedComponent(TouchableOpacity);
+  // const [MyWidth, setMyWidth] = useState(Dimensions.get('window').width);
+
+  // const user = useSelector(state => state.auth.user);
+  // console.log('Redux user:', user);
+  const [name, SetName] = useState();
+  const [address, SetAddress] = useState();
+
+  const Data = async () => {
+    const userData = await AsyncStorage.getItem('user');
+    const parsedUser = JSON.parse(userData);
+    console.log('UserData Header :', parsedUser.token);
+    SetName(parsedUser.user.name);
+    SetAddress(parsedUser.user.address);
+  };
+
+  useEffect(() => {
+    Data();
+  }, []);
 
   return (
     <View style={{position: 'static', top: 0, zIndex: 20}}>
@@ -41,27 +60,24 @@ const Header = ({functions}) => {
           />
         </TouchableOpacity> */}
         <View
-     
           style={styles.HederCenterStyle}
           entering={FadeInUp.duration(500).delay(200)}>
-            <TouchableOpacity    onPress={() => functions()}>
-
-          <Image
-            style={{
-              width: moderateScale(32),
-              height: moderateScale(32),
-              borderRadius: moderateScale(8),
-            }}
-            source={Images.SplashScreen}
+          <TouchableOpacity onPress={() => functions()}>
+            <Image
+              style={{
+                width: moderateScale(32),
+                height: moderateScale(32),
+                borderRadius: moderateScale(8),
+              }}
+              source={Images.SplashScreen}
             />
-            </TouchableOpacity>
+          </TouchableOpacity>
           <View>
             <Text style={styles.HeaderText}>Sebzy</Text>
             <Text style={styles.HeaderTextSmall}>PG Management</Text>
           </View>
         </View>
         <TouchableOpacity
-          
           style={{
             backgroundColor: '#1d1d3b',
             padding: moderateScale(6),
@@ -69,9 +85,7 @@ const Header = ({functions}) => {
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-          }}
-          >
-          
+          }}>
           <Image
             style={{
               width: moderateScale(32),
@@ -82,8 +96,10 @@ const Header = ({functions}) => {
             source={Images.USER}
           />
           <View style={{marginLeft: moderateScale(8)}}>
-            <Text style={[styles.HeaderText]}>Johan</Text>
-            <Text style={[styles.HeaderTextSmall, {color: '#FFF'}]}>India</Text>
+            <Text style={[styles.HeaderText]}>{name}</Text>
+            <Text style={[styles.HeaderTextSmall, {color: '#FFF'}]}>
+              {address}
+            </Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -110,7 +126,7 @@ export default Header;
 
 const styles = StyleSheet.create({
   HeaderMainView: {
-       flex: 1,
+    flex: 1,
     height: moderateScale(70),
     backgroundColor: '#046d92',
     flexDirection: 'row',
@@ -118,11 +134,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(16),
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 3.84,
     elevation: 5,
-
   },
   HeaderText: {
     fontSize: moderateScale(18),

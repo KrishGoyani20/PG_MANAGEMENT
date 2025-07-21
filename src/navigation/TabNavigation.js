@@ -60,27 +60,3 @@ const styles = StyleSheet.create({});
 
 
 
-
-// import { StyleSheet, Text, View } from 'react-native'
-// import React from 'react'
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import HomeScreen from '../screen/HomeScreen';
-// import RoomsScreen from '../screen/RoomsScreen';
-// import NewTenants from '../component/NewTenants';
-// import History from '../screen/History';
-
-// const Tab = createBottomTabNavigator();
-// const TabNavigation = () => {
-//     return (
-//         <Tab.Navigator screenOptions={{ headerShown: false }} initialRouteName='HomeScreen'>
-//             <Tab.Screen name='HomeScreen' component={HomeScreen} />
-//             <Tab.Screen name='RoomsScreen' component={RoomsScreen} />
-//             <Tab.Screen name='NewTenants' component={NewTenants} />
-//             <Tab.Screen name='History' component={History} />
-//         </Tab.Navigator>
-//     )
-// }
-
-// export default TabNavigation
-
-// const styles = StyleSheet.create({})

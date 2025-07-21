@@ -1,3 +1,251 @@
+
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  ImageBackground,
+  Pressable,
+  Alert,
+} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
+import {OtpInput} from 'react-native-otp-entry';
+import {moderateScale, screenHeight, screenWidth} from '../utils/Metrics';
+import {useNavigation} from '@react-navigation/native';
+
+const Colors = {
+  BACKGROUND: '#f5f5ef',
+  PRIMARY: '#046d92',
+  ALERT: '#a6252c',
+  CARD: '#ffffff',
+  SOFT_CARD: '#f1f2f2',
+  WHITE: '#ffffff',
+  GRAY85: '#d3d3d3',
+};
+
+const Fonts = {
+  POPPINS_BOLD: 'Poppins-Bold',
+  POPPINS_REGULAR: 'Poppins-Regular',
+};
+
+export default function TenantScreen() {
+  const {navigate} = useNavigation();
+  const [countryCode, setCountryCode] = useState('IN');
+  const [country, setCountry] = useState(null);
+  const [withCallingCode, setWithCallingCode] = useState(`+91`);
+  const onSelect = country => {
+    setCountryCode(country.cca2);
+    setCountry(country);
+    console.log(`+${country?.callingCode[0]}`);
+    setWithCallingCode(`+${country?.callingCode[0]}`);
+  };
+
+  const [Phonenumber, setPhonenumber] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [OTP, setOTP] = useState('');
+  const flatListRef = useRef(null);
+
+  const CreateTenantsSteps = [
+    {
+      title: 'Enter Mobile Number',
+      buttonText: 'Continue',
+      type: 'phonenumber',
+      disbled: !(Phonenumber?.length >= 10),
+    },
+    {
+      title: 'OTP',
+      buttonText: 'Verify',
+      type: 'OTP',
+      disbled: !(OTP?.length === 6),
+    },
+  ];
+
+  const phonenumberfun = async text => {
+    if (currentIndex < CreateTenantsSteps.length - 1 && text?.length >= 10) {
+      const newIndex = currentIndex + 1;
+      flatListRef.current?.scrollToIndex({index: newIndex, animated: true});
+      setCurrentIndex(newIndex);
+    }
+    setPhonenumber(text);
+  };
+
+  const verifyOtp = async () => {
+    if (!confirm) {
+      Alert.alert('OTP not sent yet. Please enter your phone number first.');
+      return;
+    }
+
+    if (!/^[0-9]{6}$/.test(OTP)) {
+      Alert.alert('Please enter a valid 6-digit OTP.');
+      return;
+    }
+
+    try {
+      await confirm.confirm(OTP);
+      navigate('UserImageCapture');
+    } catch (error) {
+      console.error('Error verifying OTP:', error.message);
+      Alert.alert('Error verifying OTP', error.message);
+    }
+  };
+
+  const handalPress = () => {
+    if (currentIndex === 1 && OTP.length === 6) {
+      navigate('UserImageCapture');
+    }
+  };
+
+  return (
+    // <ImageBackground
+    //   source={require('../assets/image/Tbackground.png')}
+    //   style={styles.backgroundImage}
+    //   resizeMode="cover">
+    <View style={styles.overlay}>
+      <View style={{margin: moderateScale(20)}}>
+        <Text style={[styles.HeaderText, styles.header]}>Tenants</Text>
+      </View>
+
+      <FlatList
+        data={CreateTenantsSteps}
+        horizontal
+        ref={flatListRef}
+        scrollEnabled={false}
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled
+        renderItem={({item}) => (
+          <View style={styles.MainFullWidth}>
+            <View style={styles.Box}>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={[styles.Title, {marginRight: moderateScale(20)}]}>
+                  {item?.title}
+                </Text>
+              </View>
+
+              <View style={styles.PHoneViewHandle}>
+                {item.type === 'phonenumber' && (
+                  <TextInput
+                    placeholder="Enter 10-digit mobile number"
+                    style={styles.TextInputPhone}
+                    maxLength={10}
+                    placeholderTextColor={Colors.PRIMARY}
+                    onChangeText={text => phonenumberfun(text)}
+                    keyboardType="number-pad"
+                    returnKeyType="next"
+                    dataDetectorTypes={'phoneNumber'}
+                    value={Phonenumber}
+                  />
+                )}
+
+                {item.type === 'OTP' && (
+                  <View style={{marginLeft: moderateScale(-8)}}>
+                    <OtpInput
+                      numberOfDigits={6}
+                      placeholder="*"
+                      onTextChange={setOTP}
+                      theme={{
+                        placeholderTextStyle: {color: Colors.PRIMARY},
+                        containerStyle: {marginTop: 50},
+                        pinCodeTextStyle: {color: Colors.PRIMARY},
+                      }}
+                    />
+                    <Pressable
+                      style={{marginTop: 8}}
+                      onPress={() => navigate('TenantScreen')}>
+                      <Text style={{color: Colors.PRIMARY}}>
+                        Change Mobile Number ? {Phonenumber}
+                      </Text>
+                    </Pressable>
+                  </View>
+                )}
+
+                <TouchableOpacity
+                  onPress={handalPress}
+                  style={[
+                    styles.Button,
+                    {
+                      backgroundColor: !item.disbled
+                        ? Colors.PRIMARY
+                        : Colors.GRAY85,
+                    },
+                  ]}>
+                  <Text style={styles.BTNTEXT}>{item?.buttonText}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        )}
+      />
+    </View>
+    // </ImageBackground>
+  );
+}
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    width: screenWidth,
+    height: screenHeight,
+    backgroundColor: Colors.BACKGROUND,
+  },
+  header: {
+    fontSize: moderateScale(26),
+    fontWeight: '800',
+    fontFamily: Fonts.POPPINS_BOLD,
+    color: Colors.PRIMARY,
+  },
+  MainFullWidth: {
+    width: widthPercentageToDP(100),
+    marginTop: heightPercentageToDP(15),
+  },
+  Box: {
+    width: '80%',
+    marginHorizontal: 'auto',
+    backgroundColor: Colors.CARD,
+    borderRadius: moderateScale(8),
+    padding: 25,
+  },
+  Title: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: Colors.PRIMARY,
+    fontFamily: Fonts.POPPINS_REGULAR,
+  },
+  PHoneViewHandle: {
+    gap: 50,
+  },
+  TextInputPhone: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: Colors.PRIMARY,
+    borderRadius: 7,
+    padding: 10,
+    marginTop: 20,
+    color: Colors.PRIMARY,
+  },
+  Button: {
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 7,
+  },
+  BTNTEXT: {
+    fontSize: 15,
+    color: Colors.WHITE,
+    fontWeight: '500',
+    fontFamily: Fonts.POPPINS_BOLD,
+  },
+});
+
+
+
+
 // import {
 //   View,
 //   Text,
@@ -596,247 +844,3 @@
 //     fontFamily: Fonts.POPPINS_BOLD,
 //   },
 // });
-
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TextInput,
-  TouchableOpacity,
-  ImageBackground,
-  Pressable,
-  Alert,
-} from 'react-native';
-import React, {useRef, useState} from 'react';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from 'react-native-responsive-screen';
-import {OtpInput} from 'react-native-otp-entry';
-import {moderateScale, screenHeight, screenWidth} from '../utils/Metrics';
-import {useNavigation} from '@react-navigation/native';
-
-const Colors = {
-  BACKGROUND: '#f5f5ef',
-  PRIMARY: '#046d92',
-  ALERT: '#a6252c',
-  CARD: '#ffffff',
-  SOFT_CARD: '#f1f2f2',
-  WHITE: '#ffffff',
-  GRAY85: '#d3d3d3',
-};
-
-const Fonts = {
-  POPPINS_BOLD: 'Poppins-Bold',
-  POPPINS_REGULAR: 'Poppins-Regular',
-};
-
-export default function TenantScreen() {
-  const {navigate} = useNavigation();
-  const [countryCode, setCountryCode] = useState('IN');
-  const [country, setCountry] = useState(null);
-  const [withCallingCode, setWithCallingCode] = useState(`+91`);
-  const onSelect = country => {
-    setCountryCode(country.cca2);
-    setCountry(country);
-    console.log(`+${country?.callingCode[0]}`);
-    setWithCallingCode(`+${country?.callingCode[0]}`);
-  };
-
-  const [Phonenumber, setPhonenumber] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [OTP, setOTP] = useState('');
-  const flatListRef = useRef(null);
-
-  const CreateTenantsSteps = [
-    {
-      title: 'Enter Mobile Number',
-      buttonText: 'Continue',
-      type: 'phonenumber',
-      disbled: !(Phonenumber?.length >= 10),
-    },
-    {
-      title: 'OTP',
-      buttonText: 'Verify',
-      type: 'OTP',
-      disbled: !(OTP?.length === 6),
-    },
-  ];
-
-  const phonenumberfun = async text => {
-    if (currentIndex < CreateTenantsSteps.length - 1 && text?.length >= 10) {
-      const newIndex = currentIndex + 1;
-      flatListRef.current?.scrollToIndex({index: newIndex, animated: true});
-      setCurrentIndex(newIndex);
-    }
-    setPhonenumber(text);
-  };
-
-  const verifyOtp = async () => {
-    if (!confirm) {
-      Alert.alert('OTP not sent yet. Please enter your phone number first.');
-      return;
-    }
-
-    if (!/^[0-9]{6}$/.test(OTP)) {
-      Alert.alert('Please enter a valid 6-digit OTP.');
-      return;
-    }
-
-    try {
-      await confirm.confirm(OTP);
-      navigate('UserImageCapture');
-    } catch (error) {
-      console.error('Error verifying OTP:', error.message);
-      Alert.alert('Error verifying OTP', error.message);
-    }
-  };
-
-  const handalPress = () => {
-    if (currentIndex === 1 && OTP.length === 6) {
-      navigate('UserImageCapture');
-    }
-  };
-
-  return (
-    // <ImageBackground
-    //   source={require('../assets/image/Tbackground.png')}
-    //   style={styles.backgroundImage}
-    //   resizeMode="cover">
-    <View style={styles.overlay}>
-      <View style={{margin: moderateScale(20)}}>
-        <Text style={[styles.HeaderText, styles.header]}>Tenants</Text>
-      </View>
-
-      <FlatList
-        data={CreateTenantsSteps}
-        horizontal
-        ref={flatListRef}
-        scrollEnabled={false}
-        showsHorizontalScrollIndicator={false}
-        pagingEnabled
-        renderItem={({item}) => (
-          <View style={styles.MainFullWidth}>
-            <View style={styles.Box}>
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={[styles.Title, {marginRight: moderateScale(20)}]}>
-                  {item?.title}
-                </Text>
-              </View>
-
-              <View style={styles.PHoneViewHandle}>
-                {item.type === 'phonenumber' && (
-                  <TextInput
-                    placeholder="Enter 10-digit mobile number"
-                    style={styles.TextInputPhone}
-                    maxLength={10}
-                    placeholderTextColor={Colors.PRIMARY}
-                    onChangeText={text => phonenumberfun(text)}
-                    keyboardType="number-pad"
-                    returnKeyType="next"
-                    dataDetectorTypes={'phoneNumber'}
-                    value={Phonenumber}
-                  />
-                )}
-
-                {item.type === 'OTP' && (
-                  <View style={{marginLeft: moderateScale(-8)}}>
-                    <OtpInput
-                      numberOfDigits={6}
-                      placeholder="*"
-                      onTextChange={setOTP}
-                      theme={{
-                        placeholderTextStyle: {color: Colors.PRIMARY},
-                        containerStyle: {marginTop: 50},
-                        pinCodeTextStyle: {color: Colors.PRIMARY},
-                      }}
-                    />
-                    <Pressable
-                      style={{marginTop: 8}}
-                      onPress={() => navigate('TenantScreen')}>
-                      <Text style={{color: Colors.PRIMARY}}>
-                        Change Mobile Number ? {Phonenumber}
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-
-                <TouchableOpacity
-                  onPress={handalPress}
-                  style={[
-                    styles.Button,
-                    {
-                      backgroundColor: !item.disbled
-                        ? Colors.PRIMARY
-                        : Colors.GRAY85,
-                    },
-                  ]}>
-                  <Text style={styles.BTNTEXT}>{item?.buttonText}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        )}
-      />
-    </View>
-    // </ImageBackground>
-  );
-}
-
-const styles = StyleSheet.create({
-  backgroundImage: {
-    width: screenWidth,
-    height: screenHeight,
-    backgroundColor: Colors.BACKGROUND,
-  },
-  header: {
-    fontSize: moderateScale(26),
-    fontWeight: '800',
-    fontFamily: Fonts.POPPINS_BOLD,
-    color: Colors.PRIMARY,
-  },
-  MainFullWidth: {
-    width: widthPercentageToDP(100),
-    marginTop: heightPercentageToDP(15),
-  },
-  Box: {
-    width: '80%',
-    marginHorizontal: 'auto',
-    backgroundColor: Colors.CARD,
-    borderRadius: moderateScale(8),
-    padding: 25,
-  },
-  Title: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: Colors.PRIMARY,
-    fontFamily: Fonts.POPPINS_REGULAR,
-  },
-  PHoneViewHandle: {
-    gap: 50,
-  },
-  TextInputPhone: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: Colors.PRIMARY,
-    borderRadius: 7,
-    padding: 10,
-    marginTop: 20,
-    color: Colors.PRIMARY,
-  },
-  Button: {
-    width: '100%',
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 7,
-  },
-  BTNTEXT: {
-    fontSize: 15,
-    color: Colors.WHITE,
-    fontWeight: '500',
-    fontFamily: Fonts.POPPINS_BOLD,
-  },
-});

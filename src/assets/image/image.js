@@ -18,7 +18,7 @@ export const Images = {
     TROOM: require('./Trooms.png'),
     THISTORY: require('./History.png'),
 
-// ek minute hu baar jaine   ok call kar je too na kar tu nath bandh rhyu kar zip banavi ne mokli deje ho have code  1 minu aapne pela chage karine push kari daiyehaha push kari de e reva de tu zip mokli dene khali 1 minute pela chnage kari nakhiye
+    // ek minute hu baar jaine   ok call kar je too na kar tu nath bandh rhyu kar zip banavi ne mokli deje ho have code  1 minu aapne pela chage karine push kari daiyehaha push kari de e reva de tu zip mokli dene khali 1 minute pela chnage kari nakhiye
     RBAD: require('./RBAD.png'),
     RFILTER: require('./filter.png'),
     RBAD2: require('./RBAD2.png'),
@@ -43,5 +43,5 @@ export const Images = {
     Geyser: require('./Geyser.png'),
     Refrigerator: require('./Refrigerator.png'),
     Cupboard: require('./Cupboard.png'),
- History: require('./History.png'),
+    History: require('./History.png'),
 }

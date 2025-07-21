@@ -37,6 +37,18 @@ export const Colors = {
     WHITELITE: 'F1f2f2',
     BLUELITE: '#046d92',
     REDLITE: '#a6252c',
+
+
+// Room Screen
+     BACKGROUND: '#f5f5ef',
+      PRIMARY: '#046d92',
+      WARNING: '#a6252c',
+      CARD: '#ffffff',
+      SOFT: '#f1f2f2',
+      BLACK: '#000000',
+      WHITE: '#ffffff',
+      DARKBLUE: '#046d92',
+      GREEN35: '#04AA6D',
 }
 
 export const Fonts = {
